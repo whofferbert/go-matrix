@@ -1,0 +1,59 @@
+#!/bin/bash
+# William Hofferbert
+
+# turn off screen saver and blanking
+xset s off
+xset s noblank
+
+# initiate lock, backgrounded
+xtrlock &
+
+# get xtrlock pid
+xtr_pid=$(ps -ef | grep "[x]trlock" | awk '{print $2}')
+
+# bottom-right corner x:5279 y:2559
+xdotool mousemove 5279 2559
+
+# the thing to run
+matrix_cmd="/home/whofferbert/etc/whoff/projects/matrix"
+
+# call terms, fullscreen'd
+
+# geometry notes
+# right 142x127+3840+0 
+# lower center 190x59+1920+1200
+# upper center 190x59+1920+0
+# lower left 190x59+0+1200
+# upper left 190x59+0+0
+
+# get original pid for mate-terminal
+original_pid=$(ps -ef | grep "[m]ate-terminal" | awk '{print $2}')
+
+# for every screen geometry
+for geom in "190x59+0+0" "190x59+0+1200" "190x59+1920+0" "190x59+1920+1200" "142x127+3840+0" ; do
+  # launch mate-terminal
+  # hide menubar and full-screen
+  # provide geometry and indicate matrix profile (set up separately)
+  # NOTE matrix profile is set to NOT exit after command completion
+  # --disable factory allows these mate-terminals to spawn independently with their own pids
+  # execute matrix cmd ; and background it
+  mate-terminal --hide-menubar --full-screen \
+  --geometry $geom --profile matrix \
+  --disable-factory -e $matrix_cmd &
+done
+
+# wait for xtrlock to terminate
+while true ; do  
+  # break out of loop when xtrlock pid is gone
+  [ ! -e /proc/$xtr_pid ] && break
+  # wait some short amount of time before checking again.
+  /usr/bin/sleep "0.25"
+done
+
+
+# once done, collect pids for mate-terminals called to run 'matrix' and kill em
+ps -ef | grep -P "[m]ate-terminal.*matrix" | awk '{print $2}' | grep -Pv "$original_pid" | xargs kill
+
+# set screensaver and blanking back on
+xset s on
+xset s blank
