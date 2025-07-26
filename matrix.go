@@ -248,7 +248,7 @@ func build_new_dropstring(glyphs_ref *[]glyphinfo, max_x int, lines int) dropstr
 
 }
 
-func redraw_dropstrings(scn tcell.Screen, cur *map[int]dropstring) {
+func redraw_dropstrings(scn tcell.Screen, cur *[]dropstring) {
 	// NOTE for some reason, we can't update the dropstrings from in this func
 	// all dropstring adjustments must be done elsewhere
 	for _, ds := range *cur {
@@ -359,8 +359,7 @@ func main() {
 	}
 
 	// keep track of dropstrings.
-	var active_dropstrings = make(map[int]dropstring)
-	num_dropstrings := 0
+	var active_dropstrings []dropstring
 
 	// do the thing until interrupted.
 	for not_interrupted {
@@ -386,10 +385,7 @@ func main() {
 			// create new dropstring
 			new_dropstring := build_new_dropstring(&glyphs, columns, lines)
 			//fmt.Printf("%#v\n", new_dropstring)
-			active_dropstrings[num_dropstrings] = new_dropstring
-			num_dropstrings++
-			//active_dropstrings = append(active_dropstrings, new_dropstring)
-
+			active_dropstrings = append(active_dropstrings, new_dropstring)
 		}
 
 		// redraw before incrementing.
@@ -399,29 +395,27 @@ func main() {
 		scn.Show()
 
 		// update dropstrings on screen
-		for _, ds := range active_dropstrings {
+		for idx, ds := range active_dropstrings {
 			// update struct by index instead of dereferencing
-			//active_dropstrings[idx].y_pos = ds.y_pos + 1
-			//if active_dropstrings[idx].y_pos > len(active_dropstrings[idx].main_glyphs) {
-			//	active_dropstrings[idx].clear_y++
-			//}
-			ds.y_pos = ds.y_pos + 1
-			if ds.y_pos > len(ds.main_glyphs) {
-				ds.clear_y++
+			active_dropstrings[idx].y_pos = ds.y_pos + 1
+			if active_dropstrings[idx].y_pos > len(active_dropstrings[idx].main_glyphs) {
+				active_dropstrings[idx].clear_y++
 			}
 		}
 
 		// clear old dropstrings to keep memory usage okay
-		for idx, ds := range active_dropstrings {
+		var ds_replace []dropstring
+		for _, ds := range active_dropstrings {
 			len_dropstring := len(ds.main_glyphs)
 			if ds.clear_y-len_dropstring > lines {
 				// delete from array.
-				delete(active_dropstrings, idx)
-				num_dropstrings--
 				//active_dropstrings[idx] = active_dropstrings[len(active_dropstrings)-1]
 				//active_dropstrings = active_dropstrings[:len(active_dropstrings)-1]
+			} else {
+				ds_replace = append(ds_replace, ds)
 			}
 		}
+		active_dropstrings = ds_replace
 
 		// repeat.
 		time.Sleep(refresh_sleep_secs)
