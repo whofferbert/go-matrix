@@ -15,7 +15,7 @@ xtr_pid=$(ps -ef | grep "[x]trlock" | awk '{print $2}')
 xdotool mousemove 5279 2559
 
 # the thing to run
-matrix_cmd="/home/whofferbert/etc/whoff/projects/matrix"
+matrix_cmd="/home/whofferbert/etc/whoff/projects/matrix/matrix"
 
 # call terms, fullscreen'd
 
