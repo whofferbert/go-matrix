@@ -54,6 +54,8 @@ var not_interrupted bool = true
 // If your terminal font renders any of these unicode ranges in double width
 // then you will want to either exclude the offending glyphs via
 var debug_glyphs = false
+// TODO - we get no row tearing with wide characters using screen.Show()
+// possibly investigate incorporating more unicode with that
 var debug_colors = false
 
 // struct to hold glyph data
