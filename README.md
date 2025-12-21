@@ -4,7 +4,11 @@ This is primarily a project written in `go` to make your terminal look like the 
 All the heavy lifting comes from matrix.go and colors.go
 Included in the project is the x86_64 binary from the compiled work: `matrix`
 
-# Screen lock
+## Re-Compiling
+Make sure you have `golang-go` installed, or a go compiler, and: 
+`go build -o matrix *.go`
+
+## Screen lock
 
 Along with this project, I have a setup to use this as a kind of screensaver/lock
 Requires `mate-terminal` and `xtrlock` to be installed, among other traditional X tools.
