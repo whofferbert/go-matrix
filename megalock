@@ -29,6 +29,17 @@ matrix_cmd="/home/whofferbert/etc/whoff/projects/matrix/matrix"
 # get original pid for mate-terminal
 original_pid=$(ps -ef | grep "[m]ate-terminal" | awk '{print $2}')
 
+get_screen_geoms() {
+  xrandr --listactivemonitors | 
+   0: +*DisplayPort-4 1920/518x1200/324+1440+0  DisplayPort-4
+ 1: +DisplayPort-3 1920/518x1200/324+1440+1200  DisplayPort-3
+ 2: +DisplayPort-2 1920/518x1200/324+3360+1200  DisplayPort-2
+ 3: +DisplayPort-1-5 1440/597x2560/336+0+0  DisplayPort-1-5
+ 4: +DisplayPort-1-6 1440/597x2560/336+5280+0  DisplayPort-1-6
+ 5: +DisplayPort-1-7 1920/518x1200/324+3360+0  DisplayPort-1-7
+
+}
+
 # for every screen geometry
 for geom in "190x59+0+0" "190x59+0+1200" "190x59+1920+0" "190x59+1920+1200" "142x127+3840+0" ; do
   # launch mate-terminal
