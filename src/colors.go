@@ -8,6 +8,11 @@ import (
 	"github.com/gdamore/tcell"
 )
 
+var fade_colors = get_fade_colors()
+var grn_blu_colors = get_greenish_blue_colors()
+var grn_colors = get_greenish_colors()
+var brt_colors = get_brightish_colors()
+
 // fade colors, lighter to darker
 func get_fade_colors() []tcell.Color {
 	var fade_colors []tcell.Color

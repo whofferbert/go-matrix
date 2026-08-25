@@ -2,6 +2,12 @@ package main
 
 import "time"
 
+// struct to hold glyph skip ranges
+type skip_ranges struct {
+	start_skip int32
+	end_skip   int32
+}
+
 // struct to hold glyph data
 type glyphinfo struct {
 	size    int

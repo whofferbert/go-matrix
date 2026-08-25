@@ -55,6 +55,14 @@ func screen_handler() {
 			// nothing
 		} else {
 			ds_replace = append(ds_replace, ds)
+			// TODO - delete used index from config
+			var replace_ds_used []int
+			for _, x := range config.active_column_indexes {
+				if x != ds.x_pos {
+					replace_ds_used = append(replace_ds_used, x)
+				}
+			}
+			config.active_column_indexes = replace_ds_used
 		}
 	}
 	config.active_dropstrings = ds_replace

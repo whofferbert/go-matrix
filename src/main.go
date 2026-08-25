@@ -17,11 +17,6 @@ import (
 //go:embed unicode/unicode_ranges
 var unicode_strings_embed string
 
-var fade_colors = get_fade_colors()
-var grn_blu_colors = get_greenish_blue_colors()
-var grn_colors = get_greenish_colors()
-var brt_colors = get_brightish_colors()
-
 type Config struct {
 	Refresh_Hz     int  `short:"z" long:"refresh-hz"`
 	Debug_Glyphs   bool `long:"debug-glyphs"`
@@ -30,12 +25,13 @@ type Config struct {
 	Fade_Length    int  `short:"f" long:"fade-length"`
 	Log_Cols       bool `long:"log-cols"`
 
-	logfile            string
-	refresh_sleep_secs time.Duration
-	screen             tcell.Screen
-	glyphs             []glyphinfo
-	active_dropstrings []dropstring
-	not_interrupted    bool
+	logfile               string
+	refresh_sleep_secs    time.Duration
+	screen                tcell.Screen
+	glyphs                []glyphinfo
+	active_dropstrings    []dropstring
+	not_interrupted       bool
+	active_column_indexes []int
 
 	x_zero int
 	x_max  int
